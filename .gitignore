@@ -102,4 +102,3 @@ __MACOSX/
 .ionide
 .env
 *.bak
-Gemfile.lock
