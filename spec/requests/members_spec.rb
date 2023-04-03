@@ -2,6 +2,18 @@ require 'rails_helper'
 
 RSpec.describe Api::MembersController, type: :request do
 
+  describe 'GET /api/members' do
+    before { get api_members_url }
+
+    it 'returns a 200 status code' do
+      expect(response).to have_http_status(200)
+    end
+
+    it 'returns all members' do
+      expect(JSON.parse(response.body).size).to eq(Member.count)
+    end
+  end
+
   describe "POST /api/members" do
     let(:team) { Team.create(name: 'my team') }
     context 'with valid parameters' do
@@ -44,4 +56,6 @@ RSpec.describe Api::MembersController, type: :request do
     end
 
   end
+
+
 end
