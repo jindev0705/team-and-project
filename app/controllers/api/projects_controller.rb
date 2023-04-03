@@ -17,42 +17,42 @@ class Api::ProjectsController < ApplicationController
     @project = Project.new(project_params)
 
     if @project.save
-      render json: { project: @project, status: :ok }
+      render json: { project: @project }, status: :ok
     else
-      render json: { error: @project.errors, status: :unprocessable_entity }
+      render json: { error: @project.errors }, status: :unprocessable_entity
     end
   end
 
   def update
     update_result = @project.update(project_params)
     if update_result
-      render json: { project: @project, status: :ok }
+      render json: { project: @project }, status: :ok
     else
-      render json: { error: @project.errors, status: :unprocessable_entity }
+      render json: { error: @project.errors }, status: :unprocessable_entity
     end
   end
 
   def destroy
     if @project.destroy
-      render json: { project: @project, status: :ok }
+      render json: { project: @project }, status: :ok
     else
-      render json: { error: @project.errors, status: :unprocessable_entity }
+      render json: { error: @project.errors }, status: :unprocessable_entity
     end
   end
 
   def project_members
     members = @project.members
-    render json: { members: members, status: :ok }
+    render json: { members: members }, status: :ok
   end
 
   def add_member
     member_id = params[:member_id]
-    render json: {result: 'No exist member', status: :unprocessable_entity} and return if Member.find_by_id(member_id).nil?
+    render json: { error: 'No exist the member' }, status: :unprocessable_entity and return if Member.find_by(id: member_id).nil?
 
     if @project.add_member(member_id)
-      render json: { status: :ok }
+      head :ok
     else
-      render json: { status: :unprocessable_entity }
+      head :unprocessable_entity
     end
 
   end
@@ -61,13 +61,13 @@ class Api::ProjectsController < ApplicationController
   def set_project
     @project = Project.find_by_id(params[:id])
     if @project.nil?
-      render json: {result: 'No exist the project', status: :unprocessable_entity}
+      render json: { error: 'No exist the project' }, status: :unprocessable_entity
     end
   end
 
   def set_project_by_project_id
     @project = Project.find_by_id(params[:project_id])
-    render json: {result: 'No exist the team', status: :unprocessable_entity} if @project.nil?
+    render json: { error: 'No exist the project' }, status: :unprocessable_entity if @project.nil?
   end
 
   def project_params
