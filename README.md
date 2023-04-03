@@ -42,6 +42,12 @@ This project is a Ruby on Rails app to keep track of members of different teams 
     `rails db:migrate`
 
 
+4. Set the .env variables
+
+   * APP_HOST=http://localhost
+   * APP_PORT=3000
+
+
 5. Make sure the tests succeed.
 
 	`bundle exec rspec`
