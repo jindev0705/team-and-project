@@ -22,11 +22,8 @@ class MembersController < ApplicationController
       'team_id' => member_params[:team_id]
     })
 
-    if result['status'] == 'ok'
-      redirect_to root_path
-    else
-      redirect_back fallback_location: root_path, notice: result['error']
-    end
+    redirect_to root_path and return unless result.include? 'error'
+    redirect_back fallback_location: root_path, notice: result['error'] and return if result.include? 'error'
   end
 
   def edit
@@ -46,22 +43,15 @@ class MembersController < ApplicationController
       'team_id' => member_params[:team_id]
     })
 
-    if result['status'] == 'ok'
-      redirect_to root_path
-    else
-      redirect_back fallback_location: root_path, notice: result['error']
-    end
+    redirect_to root_path and return unless result.include? 'error'
+    redirect_back fallback_location: root_path, notice: result['error'] and return if result.include? 'error'
   end
 
   def destroy
     result = helpers.delete_request('/api/members/' + params[:id])
 
-    if result['status'] == 'ok'
-      render json: { result: 'success', message: 'The member was deleted successfully.' }
-    else
-      render json: { result: 'error', message: result['error'] }
-    end
-
+    render json: { result: 'success', message: 'The member was deleted successfully.' } and return unless result.include? 'error'
+    render json: { result: 'error', message: result['error'] } and return if result.include? 'error'
   end
 
   private
