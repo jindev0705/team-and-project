@@ -10,11 +10,8 @@ class TeamsController < ApplicationController
       'name' => team_params[:name]
     })
 
-    if result['status'] == 'ok'
-      redirect_to root_path
-    else
-      redirect_back fallback_location: root_path, notice: result['error']
-    end
+    redirect_to root_path and return unless result.include? 'error'
+    redirect_back fallback_location: root_path, notice: result['error'] and return if result.include? 'error'
   end
 
   def edit
@@ -29,11 +26,8 @@ class TeamsController < ApplicationController
       'name' => team_params[:name]
     })
 
-    if result['status'] == 'ok'
-      redirect_to root_path
-    else
-      redirect_back fallback_location: root_path, notice: result['error']
-    end
+    redirect_to root_path and return unless result.include? 'error'
+    redirect_back fallback_location: root_path, notice: result['error'] and return if result.include? 'error'
   end
 
   def destroy
@@ -41,8 +35,8 @@ class TeamsController < ApplicationController
     render json: { result: 'error', message: "You can't delete the team because the team was assigned to any member." } and return if team_members['members'].count > 0
 
     result = helpers.delete_request('/api/teams/' + params[:id])
-    render json: { result: 'success', message: 'The team was deleted successfully.' } and return if result['status'] == 'ok'
-    render json: { result: 'error', message: result['error'] } and return unless result['status'] == 'ok'
+    render json: { result: 'success', message: 'The team was deleted successfully.' } and return unless result.include? 'error'
+    render json: { result: 'error', message: result['error'] } and return if result.include? 'error'
   end
 
   def view_members
