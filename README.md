@@ -19,7 +19,7 @@ This project is a Ruby on Rails app to keep track of members of different teams 
 * Framework: Ruby on Rails
 * Ruby version: 2.7.3
 * Rails version: 7.0.3
-* Database: SQLite3
+* Database: PostgreSQL
 * JavaScript library: jQuery 3.6.0
 
 ## How to install
