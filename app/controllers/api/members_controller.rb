@@ -27,23 +27,21 @@ class Api::MembersController < ApplicationController
   end
 
   def alter_team
-    member = Member.find_by_id(params[:member_id])
+    member = Member.find_by(id: params[:member_id])
     team_id = params[:team_id]
-    render json: { result: 'No exist the member' } , status: :unprocessable_entity and return if member.nil?
-    render json: { result: 'No exist the team' }, status: :unprocessable_entity and return if Team.find_by_id(team_id).nil?
-    if member.alter_team(team_id)
-      render status: :ok
-    else
-      render status: :unprocessable_entity
-    end
+
+    render json: { error: 'No exist the member' } , status: :unprocessable_entity and return if member.nil?
+    render json: { error: 'No exist the team' }, status: :unprocessable_entity and return if Team.find_by_id(team_id).nil?
+
+    result = member.alter_team(team_id)
+    head :ok and return if result
+    head :unprocessable_entity and return unless result
   end
 
   def destroy
-    if @member.destroy
-      render json: { member: @member }, status: :ok
-    else
-      render json: { error: @member.errors }, status: :unprocessable_entity
-    end
+    result = @member.destroy
+    render json: { member: @member }, status: :ok and return if result
+    render json: { error: @member.errors }, status: :unprocessable_entity and return unless result
   end
 
 
@@ -51,7 +49,7 @@ class Api::MembersController < ApplicationController
   def set_member
     @member = Member.find_by(id: params[:id])
     if @member.nil?
-      render json: { error: 'No exist member' }, status: :ok
+      render json: { error: 'No exist the member' }, status: :unprocessable_entity
     end
   end
 
