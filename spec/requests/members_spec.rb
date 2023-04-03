@@ -48,7 +48,7 @@ RSpec.describe Api::MembersController, type: :request do
     let(:team) { Team.create(name: 'my team') }
     context 'with valid parameters' do
       let(:valid_params) { { first_name: 'rails', last_name: 'developer', city: 'rails developer city', state: 'rails developer state', country: 'rails developer country', team_id: team.id }}
-      it 'creates a new post' do
+      it 'creates a new member' do
         expect {
           post api_members_url, params: valid_params
         }.to change(Member, :count).by(1)
