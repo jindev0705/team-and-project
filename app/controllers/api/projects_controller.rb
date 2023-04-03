@@ -59,14 +59,14 @@ class Api::ProjectsController < ApplicationController
 
   private
   def set_project
-    @project = Project.find_by_id(params[:id])
+    @project = Project.find_by(id: params[:id])
     if @project.nil?
       render json: { error: 'No exist the project' }, status: :unprocessable_entity
     end
   end
 
   def set_project_by_project_id
-    @project = Project.find_by_id(params[:project_id])
+    @project = Project.find_by(id: params[:project_id])
     render json: { error: 'No exist the project' }, status: :unprocessable_entity if @project.nil?
   end
 

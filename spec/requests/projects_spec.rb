@@ -4,6 +4,7 @@ RSpec.describe Api::ProjectsController, type: :request do
   include MembersHelper
   include ProjectsHelper
 
+  # get all projects
   describe 'GET /api/projects' do
     let!(:projects) { create_projects(3)}
     before { get api_projects_url }
@@ -18,6 +19,7 @@ RSpec.describe Api::ProjectsController, type: :request do
     end
   end
 
+  # get a project
   describe 'GET /api/projects/:id' do
     let(:project) { create_projects(1) }
 
@@ -44,6 +46,7 @@ RSpec.describe Api::ProjectsController, type: :request do
 
   end
 
+  # create a new project
   describe "POST /api/projects" do
     context 'with valid parameters' do
       let(:valid_params) { { name: 'my project' }}
@@ -86,6 +89,7 @@ RSpec.describe Api::ProjectsController, type: :request do
 
   end
 
+  # update a project
   describe 'PUT /api/projects/:id' do
     let(:project) { create_projects(1) }
 
@@ -115,6 +119,7 @@ RSpec.describe Api::ProjectsController, type: :request do
     end
   end
 
+  # delete a project
   describe 'DELETE /api/projects/:id' do
     let(:project) { create_projects(1) }
 
@@ -143,6 +148,7 @@ RSpec.describe Api::ProjectsController, type: :request do
     end
   end
 
+  # add a member to a project
   describe "POST /api/projects/:project_id/add_member" do
     let(:member) { create_members(1) }
     let(:project) { create_projects(1) }
@@ -193,6 +199,7 @@ RSpec.describe Api::ProjectsController, type: :request do
 
   end
 
+  # get all members of the project
   describe 'GET /api/projects/:project_id/project_members' do
     let(:members) { create_members(3) }
     let(:project) { create_projects(1) }
@@ -213,7 +220,7 @@ RSpec.describe Api::ProjectsController, type: :request do
       end
     end
 
-    context 'when the record does not exist' do
+    context 'when invalid parameters' do
       before { get api_project_url(0) }
 
       it 'returns "No exist the project"' do
@@ -222,4 +229,5 @@ RSpec.describe Api::ProjectsController, type: :request do
     end
 
   end
+
 end

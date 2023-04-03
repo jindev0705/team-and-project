@@ -40,7 +40,7 @@ class Api::TeamsController < ApplicationController
   end
 
   def team_members
-    team = Team.find_by_id(params[:team_id])
+    team = Team.find_by(id: params[:team_id])
     render json: { error: 'No exist the team' }, status: :unprocessable_entity and return if team.nil?
 
     members = team.members
@@ -49,7 +49,7 @@ class Api::TeamsController < ApplicationController
 
   private
   def set_team
-    @team = Team.find_by_id(params[:id])
+    @team = Team.find_by(id: params[:id])
     if @team.nil?
       render json: { error: 'No exist the team' }, status: :unprocessable_entity
     end

@@ -1,8 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe Api::TeamsController, type: :request do
+  include MembersHelper
   include TeamsHelper
 
+  # get all teams
   describe 'GET /api/teams' do
     let!(:teams) { create_teams(3)}
     before { get api_teams_url }
@@ -17,6 +19,7 @@ RSpec.describe Api::TeamsController, type: :request do
     end
   end
 
+  # get a team
   describe 'GET /api/teams/:id' do
     let(:team) { create_teams(1) }
 
@@ -43,6 +46,7 @@ RSpec.describe Api::TeamsController, type: :request do
 
   end
 
+  # create a team
   describe "POST /api/teams" do
     context 'with valid parameters' do
       let(:valid_params) { { name: 'my team' }}
@@ -85,6 +89,7 @@ RSpec.describe Api::TeamsController, type: :request do
 
   end
 
+  # update a team
   describe 'PUT /api/teams/:id' do
     let(:team) { create_teams(1) }
 
@@ -114,7 +119,7 @@ RSpec.describe Api::TeamsController, type: :request do
     end
   end
 
-
+  # delete a team
   describe 'DELETE /api/teams/:id' do
     let(:team) { create_teams(1) }
 
@@ -142,4 +147,37 @@ RSpec.describe Api::TeamsController, type: :request do
       end
     end
   end
+
+  # get all members of a team
+  describe 'GET /api/teams/:team_id/team_members' do
+    let(:members) { create_members(3) }
+    let(:team) { create_teams(1) }
+
+    context 'with valid parameters' do
+      before { post api_member_alter_team_url(members[0].id), params: { team_id: team.id } }
+      before { post api_member_alter_team_url(members[1].id), params: { team_id: team.id } }
+      before { post api_member_alter_team_url(members[2].id), params: { team_id: team.id } }
+      before { get api_team_team_members_url(team.id) }
+
+      it 'returns a 200 status code' do
+        expect(response).to have_http_status(200)
+      end
+
+      it 'returns all members of the team' do
+        get api_team_team_members_url(team.id)
+        expect(JSON.parse(response.body)['members'].size).to eq(Member.where(team_id: team.id).count)
+        expect(JSON.parse(response.body)['members'].size).to eq(3)
+      end
+    end
+
+    context 'when invalid parameters' do
+      before { get api_team_url(0) }
+
+      it 'returns "No exist the team"' do
+        expect(JSON.parse(response.body)['error']).to eq('No exist the team')
+      end
+    end
+
+  end
+
 end

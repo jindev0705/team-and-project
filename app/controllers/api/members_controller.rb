@@ -31,7 +31,7 @@ class Api::MembersController < ApplicationController
     team_id = params[:team_id]
 
     render json: { error: 'No exist the member' } , status: :unprocessable_entity and return if member.nil?
-    render json: { error: 'No exist the team' }, status: :unprocessable_entity and return if Team.find_by_id(team_id).nil?
+    render json: { error: 'No exist the team' }, status: :unprocessable_entity and return if Team.find_by(id: team_id).nil?
 
     result = member.alter_team(team_id)
     head :ok and return if result

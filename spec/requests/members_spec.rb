@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe Api::MembersController, type: :request do
   include MembersHelper
 
+  # get all members
   describe 'GET /api/members' do
     let!(:members) { create_members(3)}
     before { get api_members_url }
@@ -17,6 +18,7 @@ RSpec.describe Api::MembersController, type: :request do
     end
   end
 
+  # get a member
   describe 'GET /api/members/:id' do
     let(:member) { create_members(1) }
 
@@ -44,6 +46,7 @@ RSpec.describe Api::MembersController, type: :request do
 
   end
 
+  # create a member
   describe "POST /api/members" do
     let(:team) { Team.create(name: 'my team') }
     context 'with valid parameters' do
@@ -87,6 +90,7 @@ RSpec.describe Api::MembersController, type: :request do
 
   end
 
+  # update a member
   describe 'PUT /api/members/:id' do
     let(:member) { create_members(1) }
 
@@ -120,7 +124,7 @@ RSpec.describe Api::MembersController, type: :request do
     end
   end
 
-
+  # update the team of a member
   describe 'POST /api/members/:member_id/alter_team' do
     let(:member) { create_members(1) }
 
@@ -156,6 +160,7 @@ RSpec.describe Api::MembersController, type: :request do
 
   end
 
+  # delete a member
   describe 'DELETE /api/members/:id' do
     let(:member) { create_members(1) }
 
@@ -183,4 +188,5 @@ RSpec.describe Api::MembersController, type: :request do
       end
     end
   end
+
 end
