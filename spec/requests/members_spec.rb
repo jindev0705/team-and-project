@@ -4,7 +4,7 @@ RSpec.describe Api::MembersController, type: :request do
   include MembersHelper
 
   describe 'GET /api/members' do
-    let!(:members) { create_list(3)}
+    let!(:members) { create_members(3)}
     before { get api_members_url }
 
     it 'returns a 200 status code' do
@@ -18,10 +18,11 @@ RSpec.describe Api::MembersController, type: :request do
   end
 
   describe 'GET /api/members/:id' do
-    let(:member) { create_list(1) }
+    let(:member) { create_members(1) }
 
     context 'when the record exists' do
-      before { get api_members_url, params: { id: member[0].id } }
+      # before { get '/api/members/' + member[0].id.to_s }
+      before { get api_member_url(member.id) }
 
       it 'returns a 200 status code' do
         expect(response).to have_http_status(200)
@@ -29,7 +30,40 @@ RSpec.describe Api::MembersController, type: :request do
 
       it 'returns the member' do
         expect(response.body).not_to be_empty
-        expect(JSON.parse(response.body)[0]['id']).to eq(member[0].id)
+        expect(JSON.parse(response.body)[0]['id']).to eq(member.id)
+      end
+    end
+
+    context 'when the record does not exist' do
+      before { get api_member_url(0) }
+
+      it 'returns empty list' do
+        expect(JSON.parse(response.body).size).to eq(0)
+      end
+    end
+
+  end
+
+  describe 'PUT /api/members/:id' do
+    let(:member) { create_members(1) }
+
+    context 'when the record exists' do
+      let(:team) { Team.create(id: 5, name: 'my team') }
+      before { put api_member_url(member.id), params: { first_name: 'my', last_name: 'tester', team_id: team.id } }
+
+      it 'returns a 200 status code' do
+        expect(response).to have_http_status(200)
+      end
+
+      it 'updates the member' do
+        expect(member.reload.first_name).to eq('my')
+        expect(member.reload.last_name).to eq('tester')
+        expect(member.reload.team_id).to eq(5)
+      end
+
+      it 'returns the member' do
+        expect(response.body).not_to be_empty
+        expect(JSON.parse(response.body).size).to eq(1)
       end
     end
 
@@ -39,7 +73,6 @@ RSpec.describe Api::MembersController, type: :request do
       it 'returns empty list' do
         expect(JSON.parse(response.body).size).to eq(0)
       end
-
     end
   end
 

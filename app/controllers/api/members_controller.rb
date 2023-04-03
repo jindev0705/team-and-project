@@ -21,18 +21,9 @@ class Api::MembersController < ApplicationController
   end
 
   def update
-    team = Team.find_by_id(member_params[:team_id])
-    if team.nil?
-      render json: { result: 'No exist the team' }, status: :unprocessable_entity
-    else
-      update_result = @member.update(member_params)
-      if update_result
-        render json: { member: @member }, status: :ok
-      else
-        render json: { error: @member.errors }, status: :unprocessable_entity
-      end
-    end
-
+    result = @member.update(member_params)
+    render json: { member: @member }, status: :ok and return if result
+    render json: { error: @member.errors }, status: :unprocessable_entity and return unless result
   end
 
   def alter_team
