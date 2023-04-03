@@ -44,8 +44,7 @@ This project is a Ruby on Rails app to keep track of members of different teams 
 
 4. Set the .env variables
 
-   * APP_HOST=http://localhost
-   * APP_PORT=3000
+   * APP_HOST=http://localhost:3000/
 
 
 5. Make sure the tests succeed.
