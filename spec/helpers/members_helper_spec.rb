@@ -3,8 +3,8 @@ module MembersHelper
     # Set default attributes for the list
     team = Team.create(name: 'my test team')
     attrs = {
-      first_name: 'My List',
-      last_name: 'A list of items',
+      first_name: 'sprintfwd',
+      last_name: 'developer',
       team_id: team.id
     }
 
