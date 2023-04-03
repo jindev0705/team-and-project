@@ -21,7 +21,11 @@ module ApplicationHelper
       http.request(request)
     end
 
-    JSON.parse(response.body)
+    if response.body == ""
+      response.code == "200" ? true : false
+    else
+      JSON.parse(response.body)
+    end
   end
 
   def delete_request(request_url)

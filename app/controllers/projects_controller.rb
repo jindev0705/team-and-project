@@ -10,11 +10,8 @@ class ProjectsController < ApplicationController
       'name' => project_params[:name]
     })
 
-    if result['status'] == 'ok'
-      redirect_to root_path
-    else
-      redirect_back fallback_location: root_path, notice: result['error']
-    end
+    redirect_to root_path and return unless result.include? 'error'
+    redirect_back fallback_location: root_path, notice: result['error'] and return if result.include? 'error'
   end
 
   def edit
@@ -29,17 +26,14 @@ class ProjectsController < ApplicationController
       'name' => project_params[:name]
     })
 
-    if result['status'] == 'ok'
-      redirect_to root_path
-    else
-      redirect_back fallback_location: root_path, notice: result['error']
-    end
+    redirect_to root_path and return unless result.include? 'error'
+    redirect_back fallback_location: root_path, notice: result['error'] and return if result.include? 'error'
   end
 
   def destroy
     result = helpers.delete_request('/api/projects/' + params[:id])
-    render json: { result: 'success', message: 'The project was deleted successfully.' } and return if result['status'] == 'ok'
-    render json: { result: 'error', message: result['error'] } and return unless result['status'] == 'ok'
+    render json: { result: 'success', message: 'The project was deleted successfully.' } and return unless result.include? 'error'
+    render json: { result: 'error', message: result['error'] } and return if result.include? 'error'
   end
 
   def view_members
@@ -61,11 +55,8 @@ class ProjectsController < ApplicationController
       'member_id' => params[:member_id]
     })
 
-    if result['status'] == 'ok'
-      redirect_to root_path
-    else
-      redirect_back fallback_location: root_path, notice: result['error']
-    end
+    redirect_to root_path and return if result
+    redirect_back fallback_location: root_path, notice: result['error']
   end
 
 
