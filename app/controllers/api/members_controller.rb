@@ -5,38 +5,31 @@ class Api::MembersController < ApplicationController
   def index
     @members = Member.joins(:team).select("members.*, teams.name team_name")
 
-    render json: @members
+    render json: @members, status: :ok
   end
 
   def show
     @member = Member.joins(:team).select("members.*, teams.name team_name").where("members.id=?", params[:id])
-    render json: @member
+    render json: @member, status: :ok
   end
 
   def create
-    team = Team.find_by_id(member_params[:team_id])
-    if team.nil?
-      render json: {result: 'No exist the team', status: :no_content }
-    else
-      @member = Member.new(member_params)
-      if @member.save
-        render json: { member: @member, status: :ok }
-      else
-        render json: { error: @member.errors, status: :unprocessable_entity }
-      end
-    end
+    @member = Member.new(member_params)
+    result = @member.save
+    render json: { member: @member }, status: :ok and return if result
+    render json: { error: @member.errors }, status: :unprocessable_entity and return unless result
   end
 
   def update
     team = Team.find_by_id(member_params[:team_id])
     if team.nil?
-      render json: {result: 'No exist the team', status: :no_content }
+      render json: { result: 'No exist the team' }, status: :unprocessable_entity
     else
       update_result = @member.update(member_params)
       if update_result
-        render json: { member: @member, status: :ok }
+        render json: { member: @member }, status: :ok
       else
-        render json: { error: @member.errors, status: :unprocessable_entity }
+        render json: { error: @member.errors }, status: :unprocessable_entity
       end
     end
 
@@ -45,20 +38,20 @@ class Api::MembersController < ApplicationController
   def alter_team
     member = Member.find_by_id(params[:member_id])
     team_id = params[:team_id]
-    render json: {result: 'No exist the member', status: :no_content } and return if member.nil?
-    render json: {result: 'No exist the team', status: :no_content} and return if Team.find_by_id(team_id).nil?
+    render json: { result: 'No exist the member' } , status: :unprocessable_entity and return if member.nil?
+    render json: { result: 'No exist the team' }, status: :unprocessable_entity and return if Team.find_by_id(team_id).nil?
     if member.alter_team(team_id)
-      render json: { status: :ok }
+      render status: :ok
     else
-      render json: { status: :unprocessable_entity}
+      render status: :unprocessable_entity
     end
   end
 
   def destroy
     if @member.destroy
-      render json: { member: @member, status: :ok }
+      render json: { member: @member }, status: :ok
     else
-      render json: { error: @member.errors, status: :unprocessable_entity }
+      render json: { error: @member.errors }, status: :unprocessable_entity
     end
   end
 
@@ -67,7 +60,7 @@ class Api::MembersController < ApplicationController
   def set_member
     @member = Member.find(params[:id])
     if @member.nil?
-      render json: {result: 'No exist member', status: :ok}
+      render json: { result: 'No exist member' }, status: :ok
     end
   end
 

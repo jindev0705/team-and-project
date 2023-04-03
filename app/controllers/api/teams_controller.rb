@@ -41,7 +41,7 @@ class Api::TeamsController < ApplicationController
 
   def team_members
     team = Team.find_by_id(params[:team_id])
-    render json: {result: 'No exist the team', status: :no_content} and return if team.nil?
+    render json: {result: 'No exist the team', status: :unprocessable_entity} and return if team.nil?
 
     members = team.members
     render json: { members: members, status: :ok }
@@ -51,7 +51,7 @@ class Api::TeamsController < ApplicationController
   def set_team
     @team = Team.find_by_id(params[:id])
     if @team.nil?
-      render json: {result: 'No exist the team', status: :no_content}
+      render json: {result: 'No exist the team', status: :unprocessable_entity}
     end
   end
 

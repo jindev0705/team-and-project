@@ -47,7 +47,7 @@ class Api::ProjectsController < ApplicationController
 
   def add_member
     member_id = params[:member_id]
-    render json: {result: 'No exist member', status: :no_content} and return if Member.find_by_id(member_id).nil?
+    render json: {result: 'No exist member', status: :unprocessable_entity} and return if Member.find_by_id(member_id).nil?
 
     if @project.add_member(member_id)
       render json: { status: :ok }
@@ -61,13 +61,13 @@ class Api::ProjectsController < ApplicationController
   def set_project
     @project = Project.find_by_id(params[:id])
     if @project.nil?
-      render json: {result: 'No exist the project', status: :no_content}
+      render json: {result: 'No exist the project', status: :unprocessable_entity}
     end
   end
 
   def set_project_by_project_id
     @project = Project.find_by_id(params[:project_id])
-    render json: {result: 'No exist the team', status: :no_content} if @project.nil?
+    render json: {result: 'No exist the team', status: :unprocessable_entity} if @project.nil?
   end
 
   def project_params
