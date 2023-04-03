@@ -1,8 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe Api::MembersController, type: :request do
+  include MembersHelper
 
   describe 'GET /api/members' do
+    let!(:members) { create_list(3)}
     before { get api_members_url }
 
     it 'returns a 200 status code' do
@@ -11,6 +13,7 @@ RSpec.describe Api::MembersController, type: :request do
 
     it 'returns all members' do
       expect(JSON.parse(response.body).size).to eq(Member.count)
+      expect(JSON.parse(response.body).size).to eq(3)
     end
   end
 
