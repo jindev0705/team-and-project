@@ -17,6 +17,32 @@ RSpec.describe Api::MembersController, type: :request do
     end
   end
 
+  describe 'GET /api/members/:id' do
+    let(:member) { create_list(1) }
+
+    context 'when the record exists' do
+      before { get api_members_url, params: { id: member[0].id } }
+
+      it 'returns a 200 status code' do
+        expect(response).to have_http_status(200)
+      end
+
+      it 'returns the member' do
+        expect(response.body).not_to be_empty
+        expect(JSON.parse(response.body)[0]['id']).to eq(member[0].id)
+      end
+    end
+
+    context 'when the record does not exist' do
+      before { get api_members_url, params: { id: member[0].id } }
+
+      it 'returns empty list' do
+        expect(JSON.parse(response.body).size).to eq(0)
+      end
+
+    end
+  end
+
   describe "POST /api/members" do
     let(:team) { Team.create(name: 'my team') }
     context 'with valid parameters' do
