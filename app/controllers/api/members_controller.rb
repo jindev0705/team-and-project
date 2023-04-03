@@ -49,9 +49,9 @@ class Api::MembersController < ApplicationController
 
   private
   def set_member
-    @member = Member.find(params[:id])
+    @member = Member.find_by(id: params[:id])
     if @member.nil?
-      render json: { result: 'No exist member' }, status: :ok
+      render json: { error: 'No exist member' }, status: :ok
     end
   end
 

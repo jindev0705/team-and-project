@@ -47,7 +47,7 @@ RSpec.describe Api::MembersController, type: :request do
   describe 'PUT /api/members/:id' do
     let(:member) { create_members(1) }
 
-    context 'when the record exists' do
+    context 'when the member exists' do
       let(:team) { Team.create(id: 5, name: 'my team') }
       before { put api_member_url(member.id), params: { first_name: 'my', last_name: 'tester', team_id: team.id } }
 
@@ -67,11 +67,12 @@ RSpec.describe Api::MembersController, type: :request do
       end
     end
 
-    context 'when the record does not exist' do
-      before { get api_members_url, params: { id: member[0].id } }
+    context 'when the member does not exist' do
+      let(:team) { Team.create(id: 5, name: 'my team') }
+      before { put api_member_url(0), params: { first_name: 'my', last_name: 'tester', team_id: team.id } }
 
-      it 'returns empty list' do
-        expect(JSON.parse(response.body).size).to eq(0)
+      it 'returns "No exist member"' do
+        expect(JSON.parse(response.body)['error']).to eq('No exist member')
       end
     end
   end
