@@ -1,0 +1,47 @@
+<div class="post d-flex flex-column-fluid" id="kt_post">
+  <div id="kt_content_container" class="container">
+    <div class="card mb-7">
+      <div class="card-header">
+        <div class="card-title">
+          <h2><%= title %></h2>
+        </div>
+      </div>
+
+      <%= form_for(project, validate: true, html: {id: 'project_form'}) do |f| %>
+        <div class="card-body">
+          <div class="row">
+            <div class="row mb-6">
+              <lable class="col-lg-4 col-form-label required fw-bold fs-6">Project Name</lable>
+              <div class="col-lg-8 fv-rw">
+                <%= f.text_field :name, class: 'form-control form-control-lg form-control-solid mb-3 mb-log-0' %>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-footer d-flex justify-content-end py-6 px-9">
+          <a href="<%= root_path %>" class="btn btn-light btn-active-light-primary me-2">Cancel</a>
+          <button type="submit" id="save_project" class="btn btn-primary">
+            <span class="indicator-label">Submit</span>
+            <span class="indicator-progress">Please wait...
+              <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+          </button>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<script>
+    $('button#save_project').on('click', function(e) {
+        e.preventDefault();
+        if ($('input#project_name').val().trim() == '') {
+            showMessage( 'error', 'Project name required' );
+        }
+        else {
+            $(this).attr('data-kt-indicator', 'on');
+            $(this).attr('disabled', 'disabled');
+            $('form#project_form').submit();
+        }
+    })
+</script>

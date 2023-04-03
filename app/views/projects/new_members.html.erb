@@ -1,0 +1,58 @@
+<div class="post d-flex flex-column-fluid" id="kt_post">
+  <div id="kt_content_container" class="container">
+    <div class="card mb-7">
+      <div class="card-header">
+        <div class="card-title">
+          <h2>Add members</h2>
+        </div>
+      </div>
+
+      <%= form_tag({ controller: 'projects', action: 'add_member'}, method: 'post', id: 'project_member_form') do %>
+        <div class="card-body">
+          <div class="row">
+            <div class="row mb-6">
+              <lable class="col-lg-4 col-form-label fw-bold fs-6">Selected project</lable>
+
+              <lable class="col-lg-8 col-form-label fw-bolder fs-4"><%= @project['name'] %></lable>
+            </div>
+
+            <div class="row mb-6">
+              <lable class="col-lg-4 col-form-label fw-bold fs-6">Members</lable>
+              <div class="col-lg-8 fv-rw">
+                <select name="member_id" class="form-select" data-control="select2" data-hide-search="false">
+                  <% @members.each do |member| %>
+                    <% is_present = @project_members.find { |item| item['id'] == member['id'] } %>
+                    <% unless is_present %>
+                      <option value="<%= member['id'] %>" <%= is_present ? 'selected' : '' %>><%= member['first_name']  + ' ' + member['last_name'] %> </option>
+                    <% end %>
+                  <% end %>
+                </select>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="card-footer d-flex justify-content-end py-6 px-9">
+          <a href="<%= root_path %>" class="btn btn-light btn-active-light-primary me-2">Cancel</a>
+          <button type="submit" id="add_member" class="btn btn-primary">
+            <span class="indicator-label">Submit</span>
+            <span class="indicator-progress">Please wait...
+              <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+          </button>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<script>
+    $('button#add_member').on('click', function(e) {
+        e.preventDefault();
+        if ($('select#member_id').val() != '') {
+            $(this).attr('data-kt-indicator', 'on');
+            $(this).attr('disabled', 'disabled');
+            $('form#project_member_form').submit();
+        }
+    })
+</script>
