@@ -1,0 +1,86 @@
+<div class="post d-flex flex-column-fluid" id="kt_post">
+  <div id="kt_content_container" class="container">
+    <div class="card mb-7">
+      <div class="card-header">
+        <div class="card-title">
+          <h2><%= title %></h2>
+        </div>
+      </div>
+
+      <%= form_for(member, validate: true, html: {id: 'member_form'}) do |f| %>
+        <div class="card-body">
+          <div class="row">
+            <div class="row mb-6">
+              <lable class="col-lg-4 col-form-label required fw-bold fs-6">First Name</lable>
+              <div class="col-lg-8 fv-rw">
+                <%= f.text_field :first_name, class: 'form-control form-control-lg form-control-solid mb-3 mb-log-0' %>
+              </div>
+            </div>
+            <div class="row mb-6">
+              <lable class="col-lg-4 col-form-label required fw-bold fs-6">Last Name</lable>
+              <div class="col-lg-8 fv-rw">
+                <%= f.text_field :last_name, class: 'form-control form-control-lg form-control-solid mb-3 mb-log-0' %>
+              </div>
+            </div>
+            <div class="row mb-6">
+              <lable class="col-lg-4 col-form-label required fw-bold fs-6">City</lable>
+              <div class="col-lg-8 fv-rw">
+                <%= f.text_field :city, class: 'form-control form-control-lg form-control-solid mb-3 mb-log-0' %>
+              </div>
+            </div>
+            <div class="row mb-6">
+              <lable class="col-lg-4 col-form-label required fw-bold fs-6">State</lable>
+              <div class="col-lg-8 fv-rw">
+                <%= f.text_field :state, class: 'form-control form-control-lg form-control-solid mb-3 mb-log-0' %>
+              </div>
+            </div>
+            <div class="row mb-6">
+              <lable class="col-lg-4 col-form-label required fw-bold fs-6">Country</lable>
+              <div class="col-lg-8 fv-rw">
+                <%= f.text_field :country, class: 'form-control form-control-lg form-control-solid mb-3 mb-log-0' %>
+              </div>
+            </div>
+
+            <div class="row mb-6">
+              <lable class="col-lg-4 col-form-label required fw-bold fs-6">Team</lable>
+              <div class="col-lg-8 fv-rw">
+                <select name="member[team_id]" class="form-select" data-control="select2" data-hide-search="false">
+                  <% teams.each do |team| %>
+                    <option value="<%= team['id'] %>" <%= team['id'] == member['team_id'] ? 'selected' : '' %>><%= team['name'] %></option>
+                  <% end %>
+                </select>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="card-footer d-flex justify-content-end py-6 px-9">
+          <a href="<%= root_path %>" class="btn btn-light btn-active-light-primary me-2">Cancel</a>
+          <button type="submit" id="save_member" class="btn btn-primary">
+            <span class="indicator-label">Submit</span>
+            <span class="indicator-progress">Please wait...
+              <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+          </button>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<script>
+    $('button#save_member').on('click', function(e) {
+        e.preventDefault();
+        if ($('input#member_first_name').val().trim() == '') {
+            showMessage( 'error', 'First name required' );
+        }
+        else if ($('input#member_last_name').val().trim() == '') {
+            showMessage( 'error', 'Last name required' );
+        }
+        else {
+            $(this).attr('data-kt-indicator', 'on');
+            $(this).attr('disabled', 'disabled');
+            $('form#member_form').submit();
+        }
+    })
+</script>
