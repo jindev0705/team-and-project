@@ -44,7 +44,7 @@ This project is a Ruby on Rails app to keep track of members of different teams 
 
 4. Set the .env variables
 
-   * API_HOST=http://localhost:3000/
+   * API_HOST=http://localhost:3000
 
 
 5. Make sure the tests succeed.
@@ -57,9 +57,14 @@ This project is a Ruby on Rails app to keep track of members of different teams 
     `rails s`
 
 ## Site
-* Open the web browser and visit http://localhost:3000
-* All request handled by calling internal APIs.
-* You can test all APIs in the site.
+* Open the web browser and visit https://sprintfwd-rails.herokuapp.com/
+* All request handled by calling APIs.
+* You can test all APIs working in the site.
+
+
+#### Note: Normally, in the Rails app, the internal API calling doesn't work. So if you want to run the app on localhost, you need to update the code to calling internal API.
+  * In app/helpers/application_helper.rb file, uncomment all comments and then comment HTTParty method codes.
+  * Please confirm to set the API_HOST is http://localhost:3000
 
 ## Models
 
