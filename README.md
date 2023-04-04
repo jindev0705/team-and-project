@@ -157,7 +157,7 @@ The application has the follow routes:
   * POST 	`/api/projects/:project_id/add_member`: add a member to a project
 
 
-## Routes
+## Unit test
 The application includes 73 cases for unit test the project.
 
 * /spec/requests/members_spec.rb: cases for unit test the Member APIs
