@@ -5,6 +5,9 @@ module ApplicationHelper
   require 'net/http'
 
   def get_request(request_url)
+    puts "******************* GET URL ***********************"
+    puts ENV['API_HOST'] + request_url
+
     url = URI.parse(ENV['API_HOST'] + request_url)
     request = Net::HTTP::Get.new(url)
     response = Net::HTTP.start(url.hostname, url.port) { |http|
@@ -14,6 +17,9 @@ module ApplicationHelper
   end
 
   def post_request(request_url, data)
+    puts "******************* GET URL ***********************"
+    puts ENV['API_HOST'] + request_url
+
     url = URI.parse(ENV['API_HOST'] + request_url)
     request = Net::HTTP::Post.new(url)
     request.set_form_data(data)
@@ -29,6 +35,9 @@ module ApplicationHelper
   end
 
   def delete_request(request_url)
+    puts "******************* GET URL ***********************"
+    puts ENV['API_HOST'] + request_url
+
     url = URI.parse(ENV['API_HOST'] + request_url)
     request = Net::HTTP::Delete.new(url)
     response = Net::HTTP.start(url.hostname, url.port) do |http|
@@ -39,6 +48,9 @@ module ApplicationHelper
   end
 
   def update_request(request_url, data)
+    puts "******************* GET URL ***********************"
+    puts ENV['API_HOST'] + request_url
+
     url = URI.parse(ENV['API_HOST'] + request_url)
     request = Net::HTTP::Put.new(url)
     request.set_form_data(data)
