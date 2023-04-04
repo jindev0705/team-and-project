@@ -32,6 +32,7 @@ gem "sprockets-rails"
 
 gem "pg"
 
+gem "httparty"
 #gem "rack-timeout"
 gem "rack-timeout", require: "rack/timeout/base"
 

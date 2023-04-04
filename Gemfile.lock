@@ -80,6 +80,9 @@ GEM
     erubi (1.10.0)
     globalid (1.0.0)
       activesupport (>= 5.0)
+    httparty (0.21.0)
+      mini_mime (>= 1.0.0)
+      multi_xml (>= 0.5.2)
     i18n (1.12.0)
       concurrent-ruby (~> 1.0)
     jquery-rails (4.3.5)
@@ -98,6 +101,7 @@ GEM
     mini_portile2 (2.8.0)
     minitest (5.16.2)
     msgpack (1.5.4)
+    multi_xml (0.6.0)
     net-http (0.3.2)
       uri
     net-imap (0.2.3)
@@ -194,6 +198,7 @@ PLATFORMS
 DEPENDENCIES
   bootsnap
   dotenv-rails
+  httparty
   jquery-rails
   jwt
   net-http
